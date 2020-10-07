@@ -4,6 +4,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import classes from './ContactData.module.css';
 import axios from '../../../axios-order';
 import Input from '../../../components/UI/Input/Input';
+import { connect } from 'react-redux';
 
 class ContactData extends Component {
     state = {
@@ -15,7 +16,7 @@ class ContactData extends Component {
                     placeholder: 'Your Name'
                 },
                 value: '',
-                validation:{
+                validation: {
                     required: true
                 },
                 valid: false,
@@ -28,7 +29,7 @@ class ContactData extends Component {
                     placeholder: 'Street'
                 },
                 value: '',
-                validation:{
+                validation: {
                     required: true
                 },
                 valid: false,
@@ -41,7 +42,7 @@ class ContactData extends Component {
                     placeholder: 'ZipCode'
                 },
                 value: '',
-                validation:{
+                validation: {
                     required: true
                 },
                 valid: false,
@@ -54,7 +55,7 @@ class ContactData extends Component {
                     placeholder: 'Country'
                 },
                 value: '',
-                validation:{
+                validation: {
                     required: true
                 },
                 valid: false,
@@ -67,7 +68,7 @@ class ContactData extends Component {
                     placeholder: 'Your Email'
                 },
                 value: '',
-                validation:{
+                validation: {
                     required: true
                 },
                 valid: false,
@@ -84,12 +85,12 @@ class ContactData extends Component {
 
         const formData = {};
 
-        for(let formElementIdentifier in this.state.orderForm) {
+        for (let formElementIdentifier in this.state.orderForm) {
             formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
         }
 
         const order = {
-            ingredients: this.props.ingredients,
+            ingredients: this.props.ings,
             price: this.props.price,
             orderData: formData
         }
@@ -103,11 +104,11 @@ class ContactData extends Component {
             })
     }
 
-    checkValidity(value, rules){
+    checkValidity(value, rules) {
 
         let isValid = true;
 
-        if(rules.required){
+        if (rules.required) {
             isValid = value.trim() !== '' && isValid;
         }
 
@@ -129,7 +130,7 @@ class ContactData extends Component {
         updatedOrderForm[inputIdentifier] = updatedFormElement;
 
         let formIsValid = true;
-        for(let inputIdentifier in updatedOrderForm){
+        for (let inputIdentifier in updatedOrderForm) {
             formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
         }
 
@@ -176,4 +177,11 @@ class ContactData extends Component {
     }
 }
 
-export default ContactData
+const mapStateToProps = state => {
+    return {
+        ings: state.ingredients,
+        price: state.totalPrice
+    };
+}
+
+export default connect(mapStateToProps)(ContactData)
