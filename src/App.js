@@ -14,8 +14,6 @@ class App extends Component {
           <Route path="/orders" component={Orders} />
           <Route path="/checkout" component={Checkout} />
           <Redirect to="/burger" from="/" />
-          {/* <BurgerBuilder />
-          <Checkout /> */}
         </Layout>
       </div>
     );
