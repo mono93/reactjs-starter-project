@@ -10,7 +10,7 @@ class Modal extends React.Component {
     }
 
     componentDidUpdate(){
-        console.log('[Modal.js] will update');
+        
     }
 
     render() {
