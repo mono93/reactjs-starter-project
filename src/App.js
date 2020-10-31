@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route, Redirect, withRouter, Switch,  } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Redirect, withRouter, Switch, } from 'react-router-dom';
 import { connect } from 'react-redux'
 
 import Layout from './containers/Layout/Layout';
@@ -10,44 +10,46 @@ import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
 import * as action from './store/actions/index';
 
-class App extends Component {
+const App = (props) => {
 
-  componentDidMount() {
-    this.props.onTryAutoSignup()
-  }
+  const { onTryAutoSignup } = props;
 
-  render() {
+  useEffect(() => {
+    props.onTryAutoSignup()
+  }, [onTryAutoSignup])
 
-    let routes = (
+
+
+  let routes = (
+    <Switch>
+      <Route path="/auth" component={Auth} />
+      <Route path="/burger" component={BurgerBuilder} />
+      <Redirect to="/burger" from="/" />
+    </Switch>
+  )
+
+  if (props.isAuthnticated) {
+    routes = (
       <Switch>
+        <Route path="/orders" component={Orders} />
+        <Route path="/checkout" component={Checkout} />
+        <Route path="/logout" component={Logout} />
         <Route path="/auth" component={Auth} />
         <Route path="/burger" component={BurgerBuilder} />
         <Redirect to="/burger" from="/" />
       </Switch>
-    )
-
-    if (this.props.isAuthnticated) {
-      routes = (
-        <Switch>
-          <Route path="/orders" component={Orders} />
-          <Route path="/checkout" component={Checkout} />
-          <Route path="/logout" component={Logout} />
-          <Route path="/auth" component={Auth} />
-          <Route path="/burger" component={BurgerBuilder} />
-          <Redirect to="/burger" from="/" />
-        </Switch>
-      );
-    }
-
-    return (
-      <div>
-        <Layout>
-          {routes}
-        </Layout>
-      </div>
     );
   }
+
+  return (
+    <div>
+      <Layout>
+        {routes}
+      </Layout>
+    </div>
+  );
 }
+
 
 const mapStateToProps = state => {
   return {
